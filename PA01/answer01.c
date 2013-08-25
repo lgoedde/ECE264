@@ -1,6 +1,7 @@
 /*
  * Please fill the functions in this file.
  */
+#include <stdio.h>
 #include "pa01.h"
 
 /* == Note 1 :: C does not initialize variables for you ==
@@ -44,7 +45,13 @@
 */
 int addElement(int * array, int length)
 {
-    return 0;
+  int sum = 0;
+  int i = 0;
+  for(i; i < length; i++)
+    {
+      sum += *array[i];
+    }      
+  return (sum);
 }
 /*
  * =================================================================
@@ -70,7 +77,17 @@ int addElement(int * array, int length)
 */
 int countNegative(int * array, int length)
 {
-    return 0;
+  int i = 0;
+  int sum = 0;
+
+  for(i=0; i < length; i++)
+    {
+      if *array[i] < 0
+		 {
+		   sum++;
+                 }
+
+      return (sum);
 }
 /*
  * =================================================================
