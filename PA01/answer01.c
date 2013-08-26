@@ -82,7 +82,7 @@ int countNegative(int * array, int length)
 
   for(i=0; i < length; i++)
     {
-      if *array[i] < 0
+      if (*(array + i) < 0)
         {
 	   sum++;
         }
@@ -135,5 +135,19 @@ int countNegative(int * array, int length)
 */
 int isIncreasing(int * array, int length)
 {
-    return 0;
+  int i = 0;
+  int inc = 1;
+
+  for(i=0; i < length; i++)
+    {
+      if(*(array + i) >= *(array+i+1))
+	{
+	  inc = 0;
+	}
+    }
+  `if(length == 1 || length == 0)
+    {
+      inc = 1;
+    }
+  return (inc);
 }
