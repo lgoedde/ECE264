@@ -49,7 +49,7 @@ int addElement(int * array, int length)
   int i = 0;
   for(i; i < length; i++)
     {
-      sum += *array[i];
+      sum += *(array+i);
     }      
   return (sum);
 }
@@ -83,10 +83,10 @@ int countNegative(int * array, int length)
   for(i=0; i < length; i++)
     {
       if *array[i] < 0
-		 {
-		   sum++;
-                 }
-
+        {
+	   sum++;
+        }
+    }
       return (sum);
 }
 /*
