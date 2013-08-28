@@ -31,7 +31,7 @@
    array: an array of integers
    length: the length of the array (i.e. the number of elements)
    
-   Returns:
+   Returns:sum of all the integers that were input into the array
 
    This function returns the sum of the elements.
    For example, if
@@ -45,8 +45,9 @@
 */
 int addElement(int * array, int length)
 {
-  int sum = 0;
-  int i = 0;
+  int sum = 0; /*variable to store sum of all integers in array*/
+  int i = 0; /*counter for the for statement*/
+  
   for(i = 0; i < length; i++)
     {
       sum += *(array+i);
@@ -63,7 +64,7 @@ int addElement(int * array, int length)
    array: an array of integers
    length: the length of the array (i.e. the number of elements)
 
-   Returns:
+   Returns: sum of how many negative numbers that were in the array
 
    This function returns the number of negative elements in the array
    For example, if
@@ -77,8 +78,8 @@ int addElement(int * array, int length)
 */
 int countNegative(int * array, int length)
 {
-  int i = 0;
-  int sum = 0;
+  int i = 0; /*counter for the for statement*/ 
+  int sum = 0; /*variable that stores how many negative integers were input into the array*/
 
   for(i=0; i < length; i++)
     {
@@ -99,7 +100,7 @@ int countNegative(int * array, int length)
    array: an array of integers
    length: the length of the array (i.e. the number of elements)
   
-   Returns:
+   Returns: inc: is the state that determines if the array is increasing or not
 
    This function returns 1 if the elements are increasing
    (i.e. array[i] < array[j] for all 0 <= i < j < length).  If the
@@ -135,13 +136,12 @@ int countNegative(int * array, int length)
 */
 int isIncreasing(int * array, int length)
 {
-  int i = 0;
-  int inc;
+  int i = 0; /*counter for the for statement*/
+  int inc; /*variable that stores a 1 or 0, 1 for increasing, 0 for not increasing*/
   
 
   for(i=0; i < (length-1); i++)
-    {
-      
+    {      
       if(*(array+i) < *(array+i+1))
 	{
 	  inc = 1;
