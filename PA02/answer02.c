@@ -51,7 +51,7 @@ void my_strupper(char * s)
   int i;
   for(i=0; *(s+i)!='\0'; i++)
     {
-      if(*(s+i) < 123 && *(s+i) >96)
+      if(*(s+i) < 123 && *(s+i) >96) /*if the character is either a lower or uppercase letter it gets turned to an uppercase*/
 	{
 	  *(s+i) -= 32;
 	}
@@ -72,7 +72,7 @@ void my_strlower(char * s)
   int i;
   for(i=0; *(s+i)!='\0'; i++)
     {
-      if(*(s+i) < 91 && *(s+i) > 64)
+      if(*(s+i) < 91 && *(s+i) > 64) /*same as above but everything gets turned to lowercase*/
 	{
 	  *(s+i) += 32;
 	}
@@ -133,7 +133,7 @@ void my_strcat(char * s1, const char * s2)
 {
   int i;
   int k;
-  int j = 0;
+  int j = 0; /* i,j, and k are all loop variables*/
   int count = 0;/*counter for how many characters in string*/
   for(i=0; *(s1+i) != '\0'; i++)
     {
@@ -188,6 +188,7 @@ const char *my_strstr(const char * s1, const char * s2)
   int i;
   int j=0;
   int k=0;
+  const char *s1start = s1; /*makes a variable to hold the starting point of s1*/
   for(count=0; *(s1+j)!='\0'; count++)
     {
       if(*(s1+j) == *(s2+k))
@@ -206,11 +207,11 @@ const char *my_strstr(const char * s1, const char * s2)
 
   if(i==1)
     {
-      return(*s1+j-k);
+      return(s1start+j-k);
     }
   else
     {
-      return NULL;
+      return 0;
     }
 }
 
@@ -244,41 +245,30 @@ const char *my_strstr(const char * s1, const char * s2)
  */
 void my_strinsert(char *s1, const char *s2, int pos)
 {
-  int length=0;
-  int length2=0;
+  int length=0; /*length of s1*/
+  int length2=0;/*length of s2*/
   int i;
-  int j=0;
-  int k=0;
+  
   for(i=0; *(s2+i) != '\0'; i++)
-    {
-      length++;
-    }
-  for(i=0; *(s1+i)!='\0'; i++)
     {
       length2++;
     }
-  if(pos >= length2)
+  for(i=0; *(s1+i)!='\0'; i++)
     {
-      for(k=length2; *(s2+j)!='\0'; j++)
-	{
-	  *(s1+k+j) = *(s2+j);
-	}
-      *(s1+k+j)='\0';
+      length++;
     }
-  else
-    {
-      for(j=0; j<length; j++)
+  int copy1 = length; /*a copy of the length for s1*/
+  int tot = length+length2; /*total length when s1 and s2 are combined*/
+   for(i=tot; i >= (tot-length); i--)
 	{
-	  *(s1+length+j+pos) = *(s1+j+pos);
+	  *(s1+i)= *(s1+copy1);
+	  copy1--;
 	}
-      for(k=0; k<length; k++)
+   for(i=0; i<length2;i++)
 	{
-	  *(s1+pos+k) = *(s2+k);
+	  *(s1+pos) = *(s2+i);
+	  pos++;
 	}
-    }
-
-      
-  /* *(s1+length+pos+j) = '\0'; */
 }
 
 /**
@@ -317,10 +307,14 @@ void my_strinsert(char *s1, const char *s2, int pos)
 void my_strdelete(char *s, int pos, int length)
 {
   int i;
-  for(i=pos; i<length; i++)
+  int len=0; /*length of string s, not to be confused with the length of portion of string to be deleted*/
+  for(i=0; *(s+i)!='\0'; i++)
     {
-      *(s-i) = *(s+i);
+      len++;
     }
-  
+  for(i=0; i<(len-length);i++)
+    {
+      *(s+pos+i) = *(s+pos+length+i);
+    }
+  *(s+pos+i) = '\0';
 }
-
