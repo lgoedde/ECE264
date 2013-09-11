@@ -63,15 +63,23 @@
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
   FILE *start;
-  int temp;
-  start = fopen(filename, 'r');
-  while(fscanf(start, %d, &temp == 1))
+  int *temp =NULL;
+  int *array;
+  
+  start = fopen(filename, "r");
+  while(!feof(start))
     {
-      numberOfIntegers++;
+      fscanf(start, "%d", temp);
+	if(temp!=NULL)
+	  {
+	    numberOfIntegers++;
+	  }
     }
-    fseek(FILE *start, 0, SEEK_SET);
-      
-    return NULL;
+  fseek(start, 0, SEEK_SET);
+  array = malloc(sizeof(int)* *(numberOfIntegers));
+  array = fscanf(start, "%d");
+  fclose(start);
+  return(array);
 }
 
 /**
@@ -162,7 +170,30 @@ void sort(int * arr, int length)
  */
 int search(int * arr, int length, int key)
 {
-    return -1;
+  int first = 0;
+  int last = length-1;
+  int mid;
+  int index =-1;
+
+  do
+    {
+      mid = (first+last)/2;
+      if(key > arr[mid])
+	{
+	  first = mid+1;
+	}
+      else if(key < arr[mid])
+	{
+	  last = mid-1;
+	}
+      else
+	{
+	  index = mid;
+	  last = first-1;
+	}
+    }while(first<=last);
+
+  return index;
 }
 
 
