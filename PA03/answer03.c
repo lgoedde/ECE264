@@ -62,24 +62,31 @@
 
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
-  FILE *start;
-  int *temp =NULL;
+  FILE *start;;
   int *array;
-  
+  int i=0;
+  int *temp;
   start = fopen(filename, "r");
-  while(!feof(start))
+  if(start==NULL)
     {
-      fscanf(start, "%d", temp);
-	if(temp!=NULL)
-	  {
-	    numberOfIntegers++;
-	  }
+      return NULL;
     }
-  fseek(start, 0, SEEK_SET);
-  array = malloc(sizeof(int)* *(numberOfIntegers));
-  array = fscanf(start, "%d");
-  fclose(start);
-  return(array);
+  else
+    {
+      do
+      {
+	fscanf(start, "%d", temp);
+	numberOfIntegers++;
+      }while(temp != EOF);
+      fseek(start, 0, SEEK_SET);
+      array = malloc(sizeof(int)* *(numberOfIntegers-1));
+      for(i=0; i<(*(numberOfIntegers-1)); i++)
+	{
+	  fscanf(start, "%d", array);
+        }
+      fclose(start);
+      return(array);
+    }
 }
 
 /**
@@ -119,10 +126,55 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
  * sort.
  *
  */
+
+void sort_help(int *arr, int left, int right)
+{
+  int piv = *(arr+left);
+  int left1 = left;
+  int right1 = right;
+
+  while(left<right)
+    {
+      while((*(arr+right)>=piv) && (left<right))
+	{
+	  right--;
+	}
+      if(left != right)
+	{
+	  *(arr+left) = *(arr+right);
+	  left++;
+	}
+      while((*(arr+left)<=piv) && (left<right))
+	{
+	  left++;
+	}
+      if(left!=right)
+	{
+	  *(arr+right) = *(arr+left);
+	  right--;
+	}
+    }
+
+  *(arr+left) = piv;
+  piv = left;
+  left = left1;
+  right = right1;
+  
+  if(left<piv)
+    {
+      sort_help(arr, left, piv-1);
+    }
+  if(right>piv)
+    {
+      sort_help(arr, piv+1, right);
+    }
+}
+
 void sort(int * arr, int length)
 {
-    
+  sort_help(arr, 0, length-1);   
 }
+
 
 /**
  * Use binary search to find 'key' in a sorted array of integers
