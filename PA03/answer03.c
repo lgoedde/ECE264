@@ -1,4 +1,3 @@
-
 #include "pa03.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,10 +61,10 @@
 
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
-  FILE *start;;
+  FILE *start;
   int *array;
   int i=0;
-  int *temp;
+  int temp=0;
   start = fopen(filename, "r");
   if(start==NULL)
     {
@@ -73,16 +72,15 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
     }
   else
     {
-      do
-      {
-	fscanf(start, "%d", temp);
-	numberOfIntegers++;
-      }while(temp != EOF);
-      fseek(start, 0, SEEK_SET);
-      array = malloc(sizeof(int)* *(numberOfIntegers-1));
-      for(i=0; i<(*(numberOfIntegers-1)); i++)
+      while(fscanf(start, "%d", &temp)==1)
 	{
-	  fscanf(start, "%d", array);
+	 (*numberOfIntegers)++;
+	}
+      fseek(start, 0, SEEK_SET);
+      array = malloc(sizeof(int)*(*numberOfIntegers));
+      for(i=0; i<(*numberOfIntegers); i++)
+	{
+	  fscanf(start, "%d",&array[i]);
         }
       fclose(start);
       return(array);
@@ -167,12 +165,12 @@ void sort_help(int *arr, int left, int right)
   if(right>piv)
     {
       sort_help(arr, piv+1, right);
-    }
+      }
 }
 
 void sort(int * arr, int length)
 {
-  sort_help(arr, 0, length-1);   
+   sort_help(arr, 0, length-1);  
 }
 
 
@@ -220,32 +218,34 @@ void sort(int * arr, int length)
  * }
  * return -1;
  */
-int search(int * arr, int length, int key)
-{
-  int first = 0;
-  int last = length-1;
-  int mid;
-  int index =-1;
 
-  do
-    {
+int search_help(int *arr, int first, int last, int key)
+{
+  int mid;
+
       mid = (first+last)/2;
       if(key > arr[mid])
 	{
-	  first = mid+1;
+	  index = search_help(arr, mid+1, last, key);
 	}
       else if(key < arr[mid])
 	{
-	  last = mid-1;
+	  index = search_help(arr, first, mid-1, key); 
 	}
       else
 	{
 	  index = mid;
-	  last = first-1;
-	}
-    }while(first<=last);
-
-  return index;
+	}   
+      return(index);
 }
 
+int search(int * arr, int length, int key)
+{
+  int first = 0;
+  int last = length-1;
+  int index=-1;
 
+  index = searchhelp(arr, first, last, key);   
+
+  return(index); 
+}
