@@ -223,20 +223,26 @@ int search_help(int *arr, int first, int last, int key)
 {
   int mid;
 
+  if(last<first)
+    {
+      return(-1);
+    }
+  else
+    {
       mid = (first+last)/2;
       if(key > arr[mid])
 	{
-	  index = search_help(arr, mid+1, last, key);
+	  return search_help(arr, mid+1, last, key);
 	}
       else if(key < arr[mid])
 	{
-	  index = search_help(arr, first, mid-1, key); 
+	  return search_help(arr, first, mid-1, key); 
 	}
       else
 	{
-	  index = mid;
+	  return(mid);
 	}   
-      return(index);
+    }
 }
 
 int search(int * arr, int length, int key)
@@ -245,7 +251,7 @@ int search(int * arr, int length, int key)
   int last = length-1;
   int index=-1;
 
-  index = searchhelp(arr, first, last, key);   
+  index = search_help(arr, first, last, key);   
 
   return(index); 
 }
