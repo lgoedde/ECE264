@@ -61,12 +61,12 @@
 
 int * readIntegers(const char * filename, int * numberOfIntegers)
 {
-  FILE *start;
-  int *array;
-  int i=0;
-  int temp=0;
-  start = fopen(filename, "r");
-  if(start==NULL)
+  FILE *start; // pointer for the start of the file to be read in
+  int *array; //pointer to store the array that will be used for rest of program
+  int i=0; //counter variable
+  int temp=0; //temp variable used to find how many ints are in the text file
+  start = fopen(filename, "r"); 
+  if(start==NULL)   
     {
       return NULL;
     }
@@ -76,8 +76,8 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
 	{
 	 (*numberOfIntegers)++;
 	}
-      fseek(start, 0, SEEK_SET);
-      array = malloc(sizeof(int)*(*numberOfIntegers));
+      fseek(start, 0, SEEK_SET);//brings the start pointer back to the beginning so it can be used again
+      array = malloc(sizeof(int)*(*numberOfIntegers)); //allocating memory for array
       for(i=0; i<(*numberOfIntegers); i++)
 	{
 	  fscanf(start, "%d",&array[i]);
@@ -127,40 +127,40 @@ int * readIntegers(const char * filename, int * numberOfIntegers)
 
 void sort_help(int *arr, int left, int right)
 {
-  int piv = *(arr+left);
-  int left1 = left;
-  int right1 = right;
+  int piv = *(arr+left); //declaring the pivot for the quick sort
+  int left1 = left; //copy of the left # in this case starts at 0
+  int right1 = right; //copy of rightmost number, in this case the end of the array
 
-  while(left<right)
+  while(left<right) 
     {
       while((*(arr+right)>=piv) && (left<right))
 	{
-	  right--;
+	  right--; //decrements the rightmost number until it gets to the pivot
 	}
       if(left != right)
 	{
-	  *(arr+left) = *(arr+right);
-	  left++;
+	  *(arr+left) = *(arr+right);  //swaps the value at array[left] and array[right]
+	  left++; 
 	}
       while((*(arr+left)<=piv) && (left<right))
 	{
-	  left++;
+	  left++; //increments left number until it gets to the pivot
 	}
       if(left!=right)
 	{
-	  *(arr+right) = *(arr+left);
+	  *(arr+right) = *(arr+left); //swaps the variables within the array that correspond to left and right
 	  right--;
 	}
     }
 
-  *(arr+left) = piv;
-  piv = left;
-  left = left1;
-  right = right1;
+  *(arr+left) = piv;  //moves the unsorted part of the array to where pivot used to be 
+  piv = left; //pivot now becomes the part of the array that isnt sorted 
+  left = left1; //restores value of left
+  right = right1; //restores value of right
   
   if(left<piv)
     {
-      sort_help(arr, left, piv-1);
+      sort_help(arr, left, piv-1); //recalls the function to keep sorting the array until it is completely sorted
     }
   if(right>piv)
     {
@@ -170,7 +170,7 @@ void sort_help(int *arr, int left, int right)
 
 void sort(int * arr, int length)
 {
-   sort_help(arr, 0, length-1);  
+  sort_help(arr, 0, length-1);  //initially calles the sort help, to begin the sorting process
 }
 
 
@@ -221,37 +221,37 @@ void sort(int * arr, int length)
 
 int search_help(int *arr, int first, int last, int key)
 {
-  int mid;
+  int mid; //initilizes a new variable mid
 
-  if(last<first)
+  if(last<first) //if there is nothing in the array return a null variable
     {
       return(-1);
     }
   else
     {
-      mid = (first+last)/2;
+      mid = (first+last)/2; //creates the mid variable by dividing the length by 2
       if(key > arr[mid])
 	{
-	  return search_help(arr, mid+1, last, key);
+	  return search_help(arr, mid+1, last, key); // if the # we are looking for is greater than the # at the middle index then recall the search but this time the beginning of this array is the number at middle index +1
 	}
       else if(key < arr[mid])
 	{
-	  return search_help(arr, first, mid-1, key); 
+	  return search_help(arr, first, mid-1, key); //if the # we are searching for is less than the value at mid, then get rid of the last half and reuse the search function
 	}
       else
 	{
-	  return(mid);
+	  return(mid); // if the number we are looking for is at mid, then return the index of mid
 	}   
     }
 }
 
 int search(int * arr, int length, int key)
 {
-  int first = 0;
-  int last = length-1;
-  int index=-1;
+  int first = 0; //initializes start of the array
+  int last = length-1;  // end of the array is at length -1
+  int index=-1; //initialize the index to the null variable
 
-  index = search_help(arr, first, last, key);   
+  index = search_help(arr, first, last, key);   //the index is equal to the first call of search help, search help will return the value of index
 
   return(index); 
 }
