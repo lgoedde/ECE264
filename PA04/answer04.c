@@ -32,11 +32,12 @@
 void print_arr(int *arr, int length)
 {
   int i;
+  printf("= ");
   if(length>0)
     {
       printf("%d", arr[0]);
     }
-  for(i=1; i<length; ++i)
+  for(i=1; i<length; i++)
     {
       printf(" + %d", arr[i]);
     }
@@ -51,7 +52,7 @@ void partition_helper(int * arr, int pos, int n)
     }
 
   int i;
-  for(i=1; i<=n; ++i)
+  for(i=1; i<=n; i++)
     {
       arr[pos] = i;
       partition_helper(arr, pos+1, n-i);
@@ -84,11 +85,30 @@ void partitionAll(int value)
  *
  */
 
+void partition_helper_inc(int * arr, int pos, int n)
+{
+  if(n<= 0)
+    {
+      print_arr(arr, pos);
+      return;
+    }
 
+  int i;
+  for(i=1; i<=n; i++)
+    {
+      if((i > arr[pos-1]) || (pos!=0))
+	{
+	  arr[pos] = i;
+	  partition_helper_inc(arr, pos+1, n-i);
+	}
+    }
+}
 void partitionIncreasing(int value)
 {
   printf("partitionIncreasing %d\n", value);
-
+  int * arr = malloc(sizeof(int)*value);
+  partition_helper_inc(arr, 0, value);
+  free(arr);
 }
 
 /*
@@ -135,11 +155,31 @@ void partitionDecreasing(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
+void partition_helper_odd(int * arr, int pos, int n)
+{
+  if(n<= 0)
+    {
+      print_arr(arr, pos);
+      return;
+    }
+
+  int i;
+  for(i=1; i<=n; i++)
+    {
+      if((i%2)==1)
+	{
+	  arr[pos] = i;
+	  partition_helper_odd(arr, pos+1, n-i);
+	}
+    }
+}
 
 void partitionOdd(int value)
 {
   printf("partitionOdd %d\n", value);
-  
+  int * arr = malloc(sizeof(int)*value);
+  partition_helper_odd(arr, 0, value);
+  free(arr);
 }
 
 /*
@@ -161,10 +201,31 @@ void partitionOdd(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
+void partition_helper_even(int * arr, int pos, int n)
+{
+  if(n<= 0)
+    {
+      print_arr(arr, pos);
+      return;
+    }
+
+  int i;
+  for(i=1; i<=n; i++)
+    {
+      if((i%2)!=1)
+	{
+	  arr[pos] = i;
+	  partition_helper_even(arr, pos+1, n-i);
+	}
+    }
+}
+
 void partitionEven(int value)
 {
   printf("partitionEven %d\n", value);
-
+  int * arr = malloc(sizeof(int)*value);
+  partition_helper_even(arr, 0, value);
+  free(arr);
 }
 
 /*
@@ -208,10 +269,42 @@ void partitionOddAndEven(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
+int check_prime(int n)
+{
+  int i;
+  for(i=2;i<n;i++)
+    {
+      if((n%i)==0)
+	{
+	  return (0);
+	}
+    }
+  return (1);
+}
+void partition_helper_prime(int * arr, int pos, int n)
+{
+  if(n<= 0)
+    {
+      print_arr(arr, pos);
+      return;
+    }
+
+  int i;
+  for(i=1; i<=n; i++)
+    {
+      if(check_prime(n))
+	{
+	  arr[pos] = i;
+	  partition_helper_prime(arr, pos+1, n-i);
+	}
+    }
+}
 
 
 void partitionPrime(int value)
 {
   printf("partitionPrime %d\n", value);
-
+  int * arr = malloc(sizeof(int)*value);
+  partition_helper_prime(arr, 0, value);
+  free(arr);
 }
