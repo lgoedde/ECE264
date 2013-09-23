@@ -96,7 +96,7 @@ void partition_helper_inc(int * arr, int pos, int n)
   int i;
   for(i=1; i<=n; i++)
     {
-      if((i > arr[pos-1]) || (pos!=0))
+      if((i > arr[pos-1]) || (pos==0))
 	{
 	  arr[pos] = i;
 	  partition_helper_inc(arr, pos+1, n-i);
@@ -129,12 +129,31 @@ void partitionIncreasing(int value)
  * generates invalid partitions and checks validity before printing.
  *
  */
+void partition_helper_dec(int * arr, int pos, int n)
+{
+  if(n<= 0)
+    {
+      print_arr(arr, pos);
+      return;
+    }
 
+  int i;
+  for(i=1; i<=n; i++)
+    {
+      if((i < arr[pos-1]) || (pos==0))
+	{
+	  arr[pos] = i;
+	  partition_helper_dec(arr, pos+1, n-i);
+	}
+    }
+}
 
 void partitionDecreasing(int value)
 {
   printf("partitionDecreasing %d\n", value);
-  
+  int * arr = malloc(sizeof(int)*value);
+  partition_helper_dec(arr, 0, value);
+  free(arr);
 
 }
 
@@ -245,12 +264,41 @@ void partitionEven(int value)
  * The program should generate only valid partitions.  Do not
  * generates invalid partitions and checks validity before printing.
  */
+void partition_helper_oddeven(int * arr, int pos, int n)
+{
+  if(n == 0)
+    {
+      print_arr(arr, pos);
+      return;
+    }
 
-
+  int i;
+  for(i=1; i<=n; i++)
+    {
+      if((i % 2 == 1) && (pos == 0))
+	{
+	  arr[pos]=i;
+	}
+      /*int cond1;
+      int cond2;
+	
+      cond1 = ((arr[pos - 1] % 2) == 1) && ((i % 2) == 0);
+      cond2 = ((arr[pos - 1] % 2) == 0) && ((i % 2) == 1); */
+	
+      if(((pos == 0) && (i%2 == 1)) || ((i%2 == 1) && ((arr[pos-1])%2 == 0)) || ((i%2 == 0) && ((arr[pos-1])%2 == 1)))
+	{
+	  arr[pos] = i;
+	  partition_helper_oddeven(arr, pos+1, n-i);
+	}
+     
+    }
+}
 void partitionOddAndEven(int value)
 {
   printf("partitionOddAndEven %d\n", value);
-  
+  int * arr = malloc(sizeof(int)*value);
+  partition_helper_oddeven(arr, 0, value);
+  free(arr);
 }
 
 /*
@@ -272,7 +320,7 @@ void partitionOddAndEven(int value)
 int check_prime(int n)
 {
   int i;
-  for(i=2;i<n;i++)
+  for(i=(n-1);i>1;i--)
     {
       if((n%i)==0)
 	{
@@ -290,9 +338,9 @@ void partition_helper_prime(int * arr, int pos, int n)
     }
 
   int i;
-  for(i=1; i<=n; i++)
+  for(i=2; i<=n; i++)
     {
-      if(check_prime(n))
+      if(check_prime(i))
 	{
 	  arr[pos] = i;
 	  partition_helper_prime(arr, pos+1, n-i);
@@ -308,3 +356,4 @@ void partitionPrime(int value)
   partition_helper_prime(arr, 0, value);
   free(arr);
 }
+
