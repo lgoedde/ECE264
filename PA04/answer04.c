@@ -31,7 +31,7 @@
  */
 void print_arr(int *arr, int length)
 {
-  int i;
+  int i; //The following is my function to print the array of partitions throughout the program
   printf("= ");
   if(length>0)
     {
@@ -51,20 +51,20 @@ void partition_helper(int * arr, int pos, int n)
       return;
     }
 
-  int i;
+  int i; //counter variable 
   for(i=1; i<=n; i++)
     {
       arr[pos] = i;
-      partition_helper(arr, pos+1, n-i);
+      partition_helper(arr, pos+1, n-i);//recalls the helper to break the problem into smaller and smaller parts
     }
 }
 
 void partitionAll(int value)
 {
   printf("partitionAll %d\n", value);
-  int * arr = malloc(sizeof(int)*value);
-  partition_helper(arr, 0, value);
-  free(arr);
+  int * arr = malloc(sizeof(int)*value); //allocate mem for arr
+  partition_helper(arr, 0, value); //first call of partitionAll
+  free(arr); //free the mem used by arr
 }
 /*
  * =================================================================
@@ -96,7 +96,7 @@ void partition_helper_inc(int * arr, int pos, int n)
   int i;
   for(i=1; i<=n; i++)
     {
-      if((i > arr[pos-1]) || (pos==0))
+      if((i > arr[pos-1]) || (pos==0)) //if the numbers are increasing then it is a valid partition 
 	{
 	  arr[pos] = i;
 	  partition_helper_inc(arr, pos+1, n-i);
@@ -140,7 +140,7 @@ void partition_helper_dec(int * arr, int pos, int n)
   int i;
   for(i=1; i<=n; i++)
     {
-      if((i < arr[pos-1]) || (pos==0))
+      if((i < arr[pos-1]) || (pos==0)) //only assembles decreasing partitions of n
 	{
 	  arr[pos] = i;
 	  partition_helper_dec(arr, pos+1, n-i);
@@ -185,7 +185,7 @@ void partition_helper_odd(int * arr, int pos, int n)
   int i;
   for(i=1; i<=n; i++)
     {
-      if((i%2)==1)
+      if((i%2)==1) //if the partition has only odd numbers, assemble it
 	{
 	  arr[pos] = i;
 	  partition_helper_odd(arr, pos+1, n-i);
@@ -231,7 +231,7 @@ void partition_helper_even(int * arr, int pos, int n)
   int i;
   for(i=1; i<=n; i++)
     {
-      if((i%2)!=1)
+      if((i%2)!=1) //if the partition has only even numbers, assemble it 
 	{
 	  arr[pos] = i;
 	  partition_helper_even(arr, pos+1, n-i);
@@ -271,7 +271,7 @@ void partition_helper_oddeven(int * arr, int pos, int n)
       print_arr(arr, pos);
     }
 
-  int i;
+  int i; //This is the function that I cannot get to work, I have had help from Yung Lu and he said that the conditions are correct but it still doesnt produce correct output. 
   for(i=1; i<=n; i++)
     {
       if(((pos == 0) && (i%2 == 1)) || ((i%2 == 1) && (arr[pos - 1]%2 == 0)) || ((i%2 == 0) && (arr[pos - 1]%2 == 1)))
@@ -305,7 +305,7 @@ void partitionOddAndEven(int value)
  * generates invalid partitions and checks validity before printing.
  */
 
-int check_prime(int n)
+int check_prime(int n) //a mini function to determine if a number is prime or not
 {
   int i;
   for(i=(n-1);i>1;i--)
@@ -328,7 +328,7 @@ void partition_helper_prime(int * arr, int pos, int n)
   int i;
   for(i=2; i<=n; i++)
     {
-      if(check_prime(i))
+      if(check_prime(i)) //if checkprime(i) comes back true then assemble the partition
 	{
 	  arr[pos] = i;
 	  partition_helper_prime(arr, pos+1, n-i);
