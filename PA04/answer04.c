@@ -269,28 +269,16 @@ void partition_helper_oddeven(int * arr, int pos, int n)
   if(n == 0)
     {
       print_arr(arr, pos);
-      return;
     }
 
   int i;
   for(i=1; i<=n; i++)
     {
-      if((i % 2 == 1) && (pos == 0))
-	{
-	  arr[pos]=i;
-	}
-      /*int cond1;
-      int cond2;
-	
-      cond1 = ((arr[pos - 1] % 2) == 1) && ((i % 2) == 0);
-      cond2 = ((arr[pos - 1] % 2) == 0) && ((i % 2) == 1); */
-	
-      if(((pos == 0) && (i%2 == 1)) || ((i%2 == 1) && ((arr[pos-1])%2 == 0)) || ((i%2 == 0) && ((arr[pos-1])%2 == 1)))
+      if(((pos == 0) && (i%2 == 1)) || ((i%2 == 1) && (arr[pos - 1]%2 == 0)) || ((i%2 == 0) && (arr[pos - 1]%2 == 1)))
 	{
 	  arr[pos] = i;
 	  partition_helper_oddeven(arr, pos+1, n-i);
 	}
-     
     }
 }
 void partitionOddAndEven(int value)
