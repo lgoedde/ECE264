@@ -181,26 +181,26 @@ int * readInteger(char * filename, int * numInteger)
 
 char * * readString(char * filename, int * numString)
 {
-  char buff[MAXIMUM_LENGTH];
-  FILE * fptr = fopen(filename, "r");
+  char buff[MAXIMUM_LENGTH]; //array to store temp variables while we are working with the file 
+  FILE * fptr = fopen(filename, "r"); //pointer that stores the filename so we can work with it throughout this function
   if(fptr==NULL)
     {
       return NULL;
     }
   
-  int numlines=0;
+  int numlines=0; //number of lines within the file
   while(fgets(buff, MAXIMUM_LENGTH, fptr)!=NULL)
     {
       numlines++;
     }
-  *numString = numlines;
+  *numString = numlines; //sets numstring equal to numlines to keep the program happy 
   char * * stArr;
-  stArr = malloc(sizeof(char*)*numlines);
-  fseek(fptr, 0, SEEK_SET);
-  int i = 0;
+  stArr = malloc(sizeof(char*)*numlines); //allocates mem for stArr
+  fseek(fptr, 0, SEEK_SET); //starts the file pointer over 
+  int i = 0; //counter variable
   while(fgets(buff, MAXIMUM_LENGTH, fptr)!=NULL)
     {
-      stArr[i] = malloc(sizeof(char)*(strlen(buff)+1));
+      stArr[i] = malloc(sizeof(char)*(strlen(buff)+1)); //allocates even more memory for 2D array
       strcpy(stArr[i], buff);
       i++;
     }
@@ -214,7 +214,7 @@ char * * readString(char * filename, int * numString)
  */
 void printInteger(int * arrInteger, int numInteger)
 {
-  int i;
+  int i; //counter variable 
   for(i=0;i<numInteger;i++)
     {
       printf("%d\n", arrInteger[i]);
@@ -229,7 +229,7 @@ void printInteger(int * arrInteger, int numInteger)
  */
 void printString(char * * arrString, int numString)
 {
-  int i;
+  int i; //counter variable 
   for(i=0;i<numString;i++)
     {
       printf("%s", arrString[i]);
@@ -263,8 +263,8 @@ void printString(char * * arrString, int numString)
 
 int saveInteger(char * filename, int * arrInteger, int numInteger)
 {
-  FILE *fptr = fopen(filename, "w");
-  int i;
+  FILE *fptr = fopen(filename, "w"); //file pointer to work with throughout this function
+  int i; //counter variable 
   if(fptr==NULL)
     {
       return(0);
@@ -298,8 +298,8 @@ int saveInteger(char * filename, int * arrInteger, int numInteger)
 
 int saveString(char * filename, char * * arrString, int numString)
 {
-  FILE *fptr = fopen(filename, "w");
-  int i;
+  FILE *fptr = fopen(filename, "w"); //file pointer to work with in this function 
+  int i; //counter variable
   if(fptr==NULL)
     {
       return(0);
@@ -326,11 +326,11 @@ int saveString(char * filename, char * * arrString, int numString)
  */
 int compInt(const void *p1, const void *p2)
 {
-  int * intp1 = (int*)p1;
-  int * intp2 = (int*)p2;
-  int intv1 = *intp1;
-  int intv2 = *intp2;
-  if(intv1<intv2)
+  int * intp1 = (int*)p1; //pointer that points to p1 
+  int * intp2 = (int*)p2; //pointer that points to p2
+  int intv1 = *intp1; //variable that holds value at p1
+  int intv2 = *intp2; //variable that holds value at p2
+  if(intv1<intv2) 
     {
       return(-1);
     }
@@ -359,10 +359,10 @@ void sortInteger(int * arrInteger, int numInteger)
 
 int compStr(const void * p1, const void * p2)
 {
-  char * * strp1 = (char**)p1;
-  char * * strp2 = (char**)p2;
-  char * str1 = *strp1;
-  char * str2 = *strp2;
+  char * * strp1 = (char**)p1; //variable to hold string of p1
+  char * * strp2 = (char**)p2; //variable to hold string of p2
+  char * str1 = *strp1; //value at pointer strp1
+  char * str2 = *strp2; //value at pointer strp2
 
   return(strcmp(str1, str2));
 }
