@@ -97,23 +97,20 @@ int * readInteger(char * filename, int * numInteger)
     {
       return NULL;
     }
-  else
+     
+  while(fscanf(fptr, "%d", &temp)==1)
     {
-      while(fscanf(fptr, "%d", &temp)==1)
-	{
-	 (*numInteger)++;
-	}
-      fseek(fptr, 0, SEEK_SET);//brings the start pointer back to the beginning so it can be used again
-      arr = malloc(sizeof(int)*(*numInteger)); //allocating memory for array
-      for(i=0; i<(*numInteger); i++)
-	{
-	  fscanf(fptr, "%d",&arr[i]);
-        }
-      
-      freeInteger(arr, *numInteger);
-      fclose(fptr);
-      return(arr);
+      (*numInteger)++;
     }
+  fseek(fptr, 0, SEEK_SET);//brings the start pointer back to the beginning so it can be used again
+  arr = malloc(sizeof(int)*(*numInteger)); //allocating memory for array
+  for(i=0; i<(*numInteger); i++)
+    {
+      fscanf(fptr, "%d",&arr[i]);
+    } 
+  
+  fclose(fptr);
+  return(arr);
 }
 
 /* ----------------------------------------------- */
@@ -191,27 +188,24 @@ char * * readString(char * filename, int * numString)
       return NULL;
     }
   
-  else 
+  int numlines=0;
+  while(fgets(buff, MAXIMUM_LENGTH, fptr)!=NULL)
     {
-      int numlines=0;
-      while(fgets(buff, MAXIMUM_LENGTH, fptr)!=NULL)
-	{
-	  numlines++;
-	}
-      char * * stArr;
-      stArr = malloc(sizeof(char*)*numlines);
-      fseek(fptr, 0, SEEK_SET);
-      int i = 0;
-      while(fgets(buff, MAXIMUM_LENGTH, fptr)!=NULL)
-	{
-	  stArr[i] = malloc(sizeof(char)*(strlen(buff)+1));
-	  strcpy(stArr[i], buff);
-	  i++;
-	}
-      
-      freeString(stArr, numlines);
-      fclose(fptr);
+      numlines++;
     }
+  *numString = numlines;
+  char * * stArr;
+  stArr = malloc(sizeof(char*)*numlines);
+  fseek(fptr, 0, SEEK_SET);
+  int i = 0;
+  while(fgets(buff, MAXIMUM_LENGTH, fptr)!=NULL)
+    {
+      stArr[i] = malloc(sizeof(char)*(strlen(buff)+1));
+      strcpy(stArr[i], buff);
+      i++;
+    }
+  fclose(fptr);
+  return(stArr);
 }
 
 /* ----------------------------------------------- */
@@ -220,7 +214,11 @@ char * * readString(char * filename, int * numString)
  */
 void printInteger(int * arrInteger, int numInteger)
 {
-  
+  int i;
+  for(i=0;i<numInteger;i++)
+    {
+      printf("%d\n", arrInteger[i]);
+    }
 }
 
 /* ----------------------------------------------- */
@@ -231,6 +229,16 @@ void printInteger(int * arrInteger, int numInteger)
  */
 void printString(char * * arrString, int numString)
 {
+  int i;
+  for(i=0;i<numString;i++)
+    {
+      printf("%s", arrString[i]);
+      int len = strlen(arrString[i]);
+      if(len==0 || arrString[i][len] != '\n')
+	{
+	  printf("\n");
+	}      
+    }
 }
 
 
@@ -256,18 +264,18 @@ void printString(char * * arrString, int numString)
 int saveInteger(char * filename, int * arrInteger, int numInteger)
 {
   FILE *fptr = fopen(filename, "w");
+  int i;
   if(fptr==NULL)
     {
       return(0);
     }
-  else
+  for(i=0;i<numInteger;i++)
     {
-      if(fprintf(fptr, "%d", numInteger)==1)
-	{
-	  return(1);
-	}
+      fprintf(fptr, "%d\n", arrInteger[i]);
     }
-  return(0);
+
+  fclose(fptr);
+  return(1);
 }
 
 /* ----------------------------------------------- */
@@ -290,6 +298,23 @@ int saveInteger(char * filename, int * arrInteger, int numInteger)
 
 int saveString(char * filename, char * * arrString, int numString)
 {
+  FILE *fptr = fopen(filename, "w");
+  int i;
+  if(fptr==NULL)
+    {
+      return(0);
+    }
+  for(i=0;i<numString;i++)
+    {
+      fprintf(fptr, "%s", arrString[i]);
+      int len = strlen(arrString[i]);
+      if(len==0 || arrString[i][len] != '\n')
+	{
+	  fprintf(fptr, "\n");
+	}
+    }
+  fclose(fptr);
+  return(1);
 }
 
 /* ----------------------------------------------- */
@@ -299,9 +324,26 @@ int saveString(char * filename, char * * arrString, int numString)
  * read the Linux manual about qsort
  *
  */
-
+int compInt(const void *p1, const void *p2)
+{
+  int * intp1 = (int*)p1;
+  int * intp2 = (int*)p2;
+  int intv1 = *intp1;
+  int intv2 = *intp2;
+  if(intv1<intv2)
+    {
+      return(-1);
+    }
+  if(intv1 == intv2)
+    {
+      return(0);
+    }
+  return(1);
+   
+}
 void sortInteger(int * arrInteger, int numInteger)
 {
+  qsort(&arrInteger[0], numInteger, sizeof(int), compInt);
 }
 
 
@@ -315,9 +357,18 @@ void sortInteger(int * arrInteger, int numInteger)
  *
  */
 
+int compStr(const void * p1, const void * p2)
+{
+  char * * strp1 = (char**)p1;
+  char * * strp2 = (char**)p2;
+  char * str1 = *strp1;
+  char * str2 = *strp2;
 
+  return(strcmp(str1, str2));
+}
 void sortString(char * * arrString, int numString)
 {
+  qsort(arrString, numString, sizeof(char*), compStr);
 }
 
 
