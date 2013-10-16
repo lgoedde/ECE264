@@ -58,8 +58,11 @@ void List_destroy(Node * head)
  */
 Node * List_create(int value, int index)
 {
-
-    return NULL;
+  Node * lnc;
+  lnc = malloc(sizeof(Node));
+  lnc->value = value;
+  lnc->next = NULL;
+  return lnc;
 }
 
 /**
