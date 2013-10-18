@@ -95,10 +95,12 @@ Node * List_create(int value, int index)
 Node * List_build(int * value, int * index, int length)
 {
   int i;
+  Node * head = NULL;
   for(i=0;i<length;i++)
     {
-      List_insert_ascend(head, value[i]; index[i]);
+      List_insert_ascend(head, value[i], index[i]);
     }
+  return head;
 }
 
 
@@ -189,7 +191,15 @@ Node * List_delete(Node * head, int index)
  */
 Node * List_copy(Node * head)
 {
-    return NULL;
+  if(head == NULL)
+    {
+      return NULL;
+    }
+  Node * temp = malloc(sizeof(Node));
+  temp->value = head->value;
+  temp->index = head->index;
+  temp->next = List_copy(head->next);
+  return temp;
 }
 
 
