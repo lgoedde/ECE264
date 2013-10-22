@@ -9,6 +9,7 @@
  */
 void List_print(FILE * out, Node * head)
 {
+  printf("Hello1\n");
  while(head != NULL)
 	{
 	    fprintf(out, "%5d: %6d\n", head -> index, head -> value);
@@ -35,6 +36,7 @@ void List_print(FILE * out, Node * head)
  */
 void List_destroy(Node * head)
 {
+  printf("Hello2\n");
   if(head == NULL)
     {
       return;
@@ -58,6 +60,7 @@ void List_destroy(Node * head)
  */
 Node * List_create(int value, int index)
 {
+  printf("Hello3\n");
   Node * lnc;
   lnc = malloc(sizeof(Node));
   lnc->value = value;
@@ -94,8 +97,9 @@ Node * List_create(int value, int index)
  */
 Node * List_build(int * value, int * index, int length)
 {
-  int i;
+  int i = 0;
   Node * head = NULL;
+  
   for(i=0;i<length;i++)
     {
       List_insert_ascend(head, value[i], index[i]);
@@ -125,6 +129,7 @@ Node * List_build(int * value, int * index, int length)
  */
 Node * List_insert_ascend(Node * head, int value, int index)
 {
+  printf("Hello5\n");
   Node * b_node = NULL;
   if(head == NULL)
     {
@@ -169,8 +174,31 @@ Node * List_insert_ascend(Node * head, int value, int index)
  */
 Node * List_delete(Node * head, int index)
 {
-    return NULL;
+  Node * p = head;
+  if (p == NULL) 
+    {
+      return p;
+    }
+  if ((p -> index) == index)
+    {
+      p = p -> next;
+      free (head);
+      return p;
+    }
+  Node * q = p -> next;
+  while ((q != NULL) && ((q -> index) != index))
+    {      
+      p = p -> next;
+      q = q -> next;
+    }
+  if (q != NULL)
+    {
+      p -> next = q -> next;
+      free (q);
+    }
+  return head;
 }
+
 
 /**
  * Copy a list
