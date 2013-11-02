@@ -90,7 +90,7 @@ SparseNode *SparseArray_build(int * indicies, int * values, int length)
 {
   SparseNode * arr = NULL;
   int i;
-  for(i=0; i < length, i++)
+  for(i=0; i < length; i++)
     {
       arr = SparseArray_insert(arr, indicies[i], values[i]);
     }
@@ -131,7 +131,17 @@ void SparseArray_destroy ( SparseNode * array )
  */
 int SparseArray_getMin ( SparseNode * array )
 {
-  return 0;
+  int min = 0;
+  if(array == NULL)
+    {
+      return 0;
+    }
+  while(array->left != NULL)
+    {
+      array = array->left;
+      min = (array->index);
+    }
+  return min;
 }
 
 /* Retrieve the largest index in the sparse array tree. 
@@ -146,8 +156,17 @@ int SparseArray_getMin ( SparseNode * array )
  */
 int SparseArray_getMax ( SparseNode * array )
 {
-
-  return 0 ;
+  int max = 0;
+  if(array == NULL)
+    {
+      return 0;
+    }
+  while(array->right != NULL)
+    {
+      array = array->right;
+      max = (array->index);
+    }
+  return max;
 }
 
 
@@ -211,6 +230,44 @@ SparseNode * SparseArray_getNode(SparseNode * array, int index )
 */
 SparseNode * SparseArray_remove ( SparseNode * array, int index )
 {
+  SparseNode * node = SparseArray_getNode(array, index);
+  if(node == NULL)
+    {
+      return NULL;
+    }
+  if(index < (array->index))
+    {
+      array->left = SparseArray_remove(array->left, index);
+    }
+  if(index > (array->index))
+    {
+      array->right = SparseArray_remove(array->right, index);
+    }
+  if(((array->left) == NULL) && ((array->right) == NULL))
+    {
+      free(array);
+      return NULL;
+    }
+  if((array->left) == NULL)
+    {
+      SparseNode * rc = array->right;
+      free(array);
+      return rc;
+    }
+   if((array->right) == NULL)
+    {
+      SparseNode * lc = array->left;
+      free(array);
+      return lc;
+    }
+   SparseNode * su = array->right;
+   while((su->left) != NULL)
+     {
+       su = su->left;
+     }
+   array->index = su->index;
+   su->index = index;
+   array->right = SparseArray_remove(array->right, index);
   return array ;
 }
 
@@ -263,3 +320,14 @@ SparseNode * SparseArray_merge(SparseNode * array_1, SparseNode * array_2)
   return NULL;
 
 }
+
+#ifdef MYTEST
+
+int main(int argc, char * * argv)
+{
+  printf("Hello there!\n");
+  
+  return 0;
+}
+
+#endif
